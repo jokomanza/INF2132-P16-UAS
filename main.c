@@ -51,7 +51,7 @@ int convertToGradeWeight(char grade) {
     }
 }
 
-void inputGrades(struct Course (*courses)[], int numberOfCourses) {
+void inputCourses(struct Course (*courses)[], int numberOfCourses) {
     for (int courseIndex = 0; courseIndex < numberOfCourses; ++courseIndex) {
         struct Course course = {};
         char grade;
@@ -137,11 +137,11 @@ int main() {
     inputStudent(&student);
 
     int numberOfCourses = inputNumberOfCourses();
-    struct Course grades[numberOfCourses] = {};
-    inputGrades(&grades, numberOfCourses);
+    struct Course courses[numberOfCourses] = {};
+    inputCourses(&courses, numberOfCourses);
 
-    calculateCoursesGrade(&grades, numberOfCourses);
-    printStudentCourses(student, grades, numberOfCourses);
+    calculateCoursesGrade(&courses, numberOfCourses);
+    printStudentCourses(student, courses, numberOfCourses);
 
     return 0;
 }
@@ -155,7 +155,7 @@ void other() {
             .semester = 1
     };
 
-    struct Course grades[9] = {
+    struct Course courses[9] = {
             {
                     .courseCode = "MBY01",
                     .courseName = "Pendidikan Agama Islam",
