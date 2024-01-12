@@ -21,6 +21,14 @@ void inputStudent(struct Student *student) {
     printf("\n");
 }
 
+int inputNumberOfCourses() {
+    int numberOfCourses = 0;
+    printf("Please input courses information:\n");
+    printf("| Number of course\t\t\t: ");
+    scanf(" %d", &numberOfCourses);
+
+    return numberOfCourses;
+}
 
 bool isGradeValid(char grade) {
     return grade == 'A' || grade == 'B' || grade == 'C' || grade == 'D' || grade == 'E';
@@ -125,23 +133,13 @@ void printStudentCourses(struct Student student, struct Course courses[], int nu
 }
 
 int main() {
-    struct Student student = {
-            .idNumber = 231110062,
-            .name = "Joko Supriyanto",
-            .studyProgram = "Computer Science",
-            .semester = 1
-    };
-
+    struct Student student = {};
     inputStudent(&student);
 
-    int numberOfCourses = 0;
-    printf("Please input courses information:\n");
-    printf("| Number of course\t\t\t: ");
-    scanf(" %d", &numberOfCourses);
-
-    struct Course grades[numberOfCourses];
-
+    int numberOfCourses = inputNumberOfCourses();
+    struct Course grades[numberOfCourses] = {};
     inputGrades(&grades, numberOfCourses);
+
     calculateCoursesGrade(&grades, numberOfCourses);
     printStudentCourses(student, grades, numberOfCourses);
 
@@ -149,6 +147,14 @@ int main() {
 }
 
 void other() {
+
+    struct Student student = {
+            .idNumber = 231110062,
+            .name = "Joko Supriyanto",
+            .studyProgram = "Computer Science",
+            .semester = 1
+    };
+
     struct Course grades[9] = {
             {
                     .courseCode = "MBY01",
