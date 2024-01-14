@@ -1,4 +1,3 @@
-
 #ifndef INF2132_P16_UAS_STUDENT_H
 #define INF2132_P16_UAS_STUDENT_H
 
@@ -8,5 +7,7 @@ struct Student {
     char studyProgram[30];
     int semester;
 };
+
+void inputStudent(struct Student *student);
 
 #endif

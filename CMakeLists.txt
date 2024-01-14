@@ -5,4 +5,9 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(INF2132_P16_UAS main.c
         Student.h
-        Course.h)
+        Student.c
+        Course.h
+        Course.c
+        utility.h
+        utility.c
+)
