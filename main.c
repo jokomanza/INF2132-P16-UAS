@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
 #include "Student.h"
 #include "Course.h"
 
@@ -9,27 +6,13 @@ void divider() {
     printf("=======================================================\n");
 };
 
-int inputInteger(char message[50]) {
-    char *end = NULL;
-    char buf[255];
-    int n = 0;
-
-    printf("%s", message);
-    while (fgets(buf, sizeof(buf), stdin)) {
-        n = (int) strtol(buf, &end, 10);
-        if (end == buf || *end != '\n') {
-            printf("| Not recognised as an integer. Please enter an integer: ");
-        } else break;
-    }
-
-    return n;
-}
-
 void inputStudent(struct Student *student) {
     divider();
     printf("Please input student information:\n");
 
-    student->idNumber = inputInteger("| Id\t\t\t: ");
+    printf("| Id\t\t\t: ");
+    scanf("%d", &student->idNumber);
+    getchar();
 
     printf("| Name\t\t\t: ");
     scanf("%[^\n]%*c", student->name);
@@ -37,7 +20,9 @@ void inputStudent(struct Student *student) {
     printf("| Study Program\t: ");
     scanf("%[^\n]%*c", student->studyProgram);
 
-    student->semester = inputInteger("| Semester\t\t: ");
+    printf("| Semester\t\t: ");
+    scanf("%d", &student->semester);
+    getchar();
 
     printf("\n");
 }
@@ -46,13 +31,11 @@ int inputNumberOfCourses() {
     int numberOfCourses;
 
     printf("Please input courses information:\n");
-    numberOfCourses = inputInteger("| Number of course\t\t\t: ");
+    printf("| Number of course\t\t\t: ");
+    scanf("%d", &numberOfCourses);
+    getchar();
 
     return numberOfCourses;
-}
-
-bool isGradeValid(char grade) {
-    return grade == 'A' || grade == 'B' || grade == 'C' || grade == 'D' || grade == 'E';
 }
 
 int convertToGradeWeight(char grade) {
@@ -85,21 +68,16 @@ void inputCourses(struct Course (*courses)[], int numberOfCourses) {
         printf("| Name\t\t: ");
         scanf("%[^\n]%*c", course.courseName);
 
-        course.credits = inputInteger("| Credits\t: ");
+        printf("| Credits\t: ");
+        scanf("%d", &course.credits);
+        getchar();
 
-         while (!isGradeValid(course.grade)) {
-            printf("| Grade\t\t: ");
-            scanf("%[^\n]%*c", &course.grade);
+        printf("| Grade\t\t: ");
+        scanf("%[^\n]%*c", &course.grade);
 
-            if (!isGradeValid(course.grade)) {
-                printf("| - [WARNING] Inputted grade %c is not valid, please try again\n", course.grade);
-                continue;
-            }
+        divider();
+        printf("\n");
 
-            divider();
-
-            printf("\n");
-         }
         (*courses)[n] = course;
     }
 }
