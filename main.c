@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 #include "Student.h"
 #include "Course.h"
 
@@ -7,25 +9,44 @@ void divider() {
     printf("=======================================================\n");
 };
 
+int inputInteger(char message[50]) {
+    char *end = NULL;
+    char buf[255];
+    int n = 0;
+
+    printf("%s", message);
+    while (fgets(buf, sizeof(buf), stdin)) {
+        n = (int) strtol(buf, &end, 10);
+        if (end == buf || *end != '\n') {
+            printf("| Not recognised as an integer. Please enter an integer: ");
+        } else break;
+    }
+
+    return n;
+}
+
 void inputStudent(struct Student *student) {
     divider();
     printf("Please input student information:\n");
-    printf("| Id\t\t\t: ");
-    scanf(" %d", &student->idNumber);
+
+    student->idNumber = inputInteger("| Id\t\t\t: ");
+
     printf("| Name\t\t\t: ");
-    scanf(" %s", &(*student->name));
+    scanf("%[^\n]%*c", student->name);
+
     printf("| Study Program\t: ");
-    scanf(" %s", &(*student->studyProgram));
-    printf("| Semester\t\t: ");
-    scanf(" %d", &student->semester);
+    scanf("%[^\n]%*c", student->studyProgram);
+
+    student->semester = inputInteger("| Semester\t\t: ");
+
     printf("\n");
 }
 
 int inputNumberOfCourses() {
-    int numberOfCourses = 0;
+    int numberOfCourses;
+
     printf("Please input courses information:\n");
-    printf("| Number of course\t\t\t: ");
-    scanf(" %d", &numberOfCourses);
+    numberOfCourses = inputInteger("| Number of course\t\t\t: ");
 
     return numberOfCourses;
 }
@@ -52,34 +73,34 @@ int convertToGradeWeight(char grade) {
 }
 
 void inputCourses(struct Course (*courses)[], int numberOfCourses) {
-    for (int courseIndex = 0; courseIndex < numberOfCourses; ++courseIndex) {
+    for (int n = 0; n < numberOfCourses; ++n) {
         struct Course course = {};
-        char grade;
 
         divider();
-        printf("| Course %d\n", courseIndex + 1);
-        printf("| Code\t\t: ");
-        scanf(" %s", &(*course.courseCode));
-        printf("| Name\t\t: ");
-        scanf(" %s", &(*course.courseName));
-        printf("| Credits\t: ");
-        scanf(" %d", &course.credits);
-        while (true) {
-            printf("| Grade\t\t: ");
-            scanf(" %c", &grade);
+        printf("| Course %d\n", n + 1);
 
-            if (!isGradeValid(grade)) {
-                printf("| - [WARNING] Inputted grade %c is not valid, please try again\n", grade);
+        printf("| Code\t\t: ");
+        scanf("%[^\n]%*c", course.courseCode);
+
+        printf("| Name\t\t: ");
+        scanf("%[^\n]%*c", course.courseName);
+
+        course.credits = inputInteger("| Credits\t: ");
+
+         while (!isGradeValid(course.grade)) {
+            printf("| Grade\t\t: ");
+            scanf("%[^\n]%*c", &course.grade);
+
+            if (!isGradeValid(course.grade)) {
+                printf("| - [WARNING] Inputted grade %c is not valid, please try again\n", course.grade);
                 continue;
             }
 
-            course.grade = grade;
             divider();
 
             printf("\n");
-            break;
-        }
-        (*courses)[courseIndex] = course;
+         }
+        (*courses)[n] = course;
     }
 }
 
@@ -102,7 +123,7 @@ void printStudentCourses(struct Student student, struct Course courses[], int nu
     printf("\n");
 
     printf("========================================================================================================================\n");
-    printf("| No\t| Code\t\t| Name\t\t\t\t\t\t\t\t| Credits\t\t| Course\t\t| Course Weight\t| Actual Grade |\n");
+    printf("| No\t| Code\t\t| Name\t\t\t\t\t\t\t\t| Credits\t\t| Grade\t\t| Grade Weight\t| Actual Grade |\n");
     printf("========================================================================================================================\n");
 
     int totalCredits = 0;
@@ -110,17 +131,17 @@ void printStudentCourses(struct Student student, struct Course courses[], int nu
     float sks;
 
     for (int i = 0; i < numberOfCourses; ++i) {
-        struct Course grade = courses[i];
-        totalCredits += grade.credits;
-        totalActualGrades += grade.actualGrade;
+        struct Course course = courses[i];
+        totalCredits += course.credits;
+        totalActualGrades += course.actualGrade;
 
         printf("| %-6d", i + 1);
-        printf("| %-10s", grade.courseCode);
-        printf("| %-34s", grade.courseName);
-        printf("| %-14d", grade.credits);
-        printf("| %-14c", grade.grade);
-        printf("| %-14d", grade.gradeWeight);
-        printf("| %-13d|", grade.actualGrade);
+        printf("| %-10s", course.courseCode);
+        printf("| %-34s", course.courseName);
+        printf("| %-14d", course.credits);
+        printf("| %-14c", course.grade);
+        printf("| %-14d", course.gradeWeight);
+        printf("| %-13d|", course.actualGrade);
         printf("\n");
     }
 
@@ -137,7 +158,7 @@ int main() {
     inputStudent(&student);
 
     int numberOfCourses = inputNumberOfCourses();
-    struct Course courses[numberOfCourses] = {};
+    struct Course courses[numberOfCourses];
     inputCourses(&courses, numberOfCourses);
 
     calculateCoursesGrade(&courses, numberOfCourses);
