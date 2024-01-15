@@ -1,7 +1,10 @@
 #include "Student.h"
 #include "Course.h"
+#include "utility.h"
 
 int main() {
+    printIdentity();
+
     struct Student student = {};
     inputStudent(&student);
 
