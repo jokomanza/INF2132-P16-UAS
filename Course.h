@@ -21,3 +21,5 @@ void calculateCoursesGrade(struct Course (*courses)[], int numberOfCourses);
 void printStudentCourses(struct Student student, struct Course courses[], int numberOfCourses);
 
 #endif
+
+

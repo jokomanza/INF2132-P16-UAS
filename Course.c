@@ -84,7 +84,7 @@ void printStudentCourses(struct Student student, struct Course courses[], int nu
 
     int totalCredits = 0;
     int totalActualGrades = 0;
-    float sks;
+    float ipSemester;
 
     for (int i = 0; i < numberOfCourses; ++i) {
         struct Course course = courses[i];
@@ -101,10 +101,10 @@ void printStudentCourses(struct Student student, struct Course courses[], int nu
         printf("\n");
     }
 
-    sks = (float) totalActualGrades / (float) totalCredits;
+    ipSemester = (float) totalActualGrades / (float) totalCredits;
 
     printf("========================================================================================================================\n");
     printf("|%49s\t\t| %-45d | %-13d|\n", "Total", totalCredits, totalActualGrades);
-    printf("|%49s\t\t| %-45s | %-13.2f|\n", "IP Semester", " ", sks);
+    printf("|%49s\t\t| %-45s | %-13.2f|\n", "IP Semester", " ", ipSemester);
     printf("========================================================================================================================\n");
 }
